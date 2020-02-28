@@ -14,6 +14,11 @@
     border-width: 2px;
 }
 
+.layers-panel{
+    background-color: cornflowerblue;
+    width: 300px 
+}
+
 #layers-list{
     cursor: pointer;
 }
@@ -37,11 +42,6 @@
     to {
         transform: rotate(360deg);
     }
-}
-
-.button-selected{
-    background-color: blueviolet;
-
 }
 
 .color-picker{

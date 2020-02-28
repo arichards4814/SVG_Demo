@@ -20,18 +20,15 @@ let panelColor = document.getElementById("shape-color")
 
 //handle which button is selected
 buttonGroup.addEventListener("click", function(e){
-    console.log(buttonGroup)
+    
     let buttonArray = Array.from(buttonGroup.children)
-    console.log(buttonArray)
-    console.log(e.target.classList.contains("button-selected"))
 
     if (e.target.classList.contains("button-selected")) {
-        console.log("test")
+        
     } else {
-        console.log(buttonArray)
+        
         buttonArray.forEach(button1 => {
-            console.log(button1)
-            button1.classList.remove("button-selected")
+        button1.classList.remove("button-selected")
         })
     }
 
@@ -39,7 +36,7 @@ buttonGroup.addEventListener("click", function(e){
 
 slider.addEventListener("change", function(e){
     if (selectedShape){
-        console.log(selectedShape)
+        
         size.innerText = slider.value
         currentSize = slider.value
         if (selectedShape.tagName === "rect"){
@@ -49,8 +46,7 @@ slider.addEventListener("change", function(e){
 
             selectedShape.setAttribute("r", currentSize);
         }
-        
-        // selectedShape.setAttribute("width", currentSize);
+
     } else {
         size.innerText = slider.value
         currentSize = slider.value
@@ -62,32 +58,39 @@ buttonGroup.addEventListener("click", function(e){
     switch (e.target.innerText) {
         case "Select":
             selected = "Select"
+            clearButtonColor(e)
             break;
         case "Circle":
             selected = "Circle"
+            clearButtonColor(e)
             break;
         case "Square":
             selected = "Square"
+            clearButtonColor(e)
             break;
         case "Custom Circle":
             selected = "Triangle"
+            clearButtonColor(e)
             break;
         case "Custom Square":
             selected = "Custom Square"
+            clearButtonColor(e)
             break;
         case "Custom Path":
             selected = "Custom Path"
-            console.log(selected)
+            clearButtonColor(e)
+            //console.log(selected)
             break;
         default:
         // code block
     }
 
-
 })
 
+// svg.addEventListener("mousemove", function(e){
+// })
 
-// on drag event
+
 let firstClick = {}
 let lastClick = {}
 let pathBuilder = []
@@ -96,37 +99,31 @@ svg.addEventListener("mousedown", function(e){
     let x = event.clientX - rect.left - currentSize;
     let y = event.clientY - rect.top - currentSize;
 
+    
     if(selected === "Triangle" || selected === "Custom Square"){
-    firstClick = {
+        
+        firstClick = {
         x: x,
         y: y
     }
 }
-    console.log(selected)
+    
     if(selected === "Custom Path"){
         let x = event.clientX - rect.left
         let y = event.clientY - rect.top
 
         pathBuilder.push([x,y])
-        console.log(pathBuilder)
 
+        //build path on the second click. 
         if (pathBuilder.length > 1){
-
             buildPath(pathBuilder)
         }
-        //build path on the second click. 
-
-
-
-
-    }
+        
+    } 
 })
 
-
-svg.addEventListener("drag", function (e) {
-    console.log(e)
-})
 svg.addEventListener("mouseup", function (e) {
+
     
     if (selected === "Triangle" || selected === "Custom Square") {
     let rect = svg.getBoundingClientRect();
@@ -202,7 +199,6 @@ svg.addEventListener("mouseover", function(e){
 
 function createCircle(e){
     
-
     //get mouse position
     let rect = svg.getBoundingClientRect();
     let x = event.clientX - rect.left - currentSize;
@@ -234,7 +230,7 @@ function createCircle(e){
 
     function createSquare(e) {
 
-        console.log("worked")
+        //console.log("worked")
         //get mouse position
         let rect = svg.getBoundingClientRect();
         let x = event.clientX - rect.left - (currentSize * 1.5);
@@ -267,7 +263,7 @@ function createCircle(e){
 
     function createCustomSquare(e, c) {
 
-        console.log("worked")
+
         //get mouse position
         let rect = svg.getBoundingClientRect();
         let x = event.clientX - rect.left - (c * 1.5);
@@ -332,7 +328,7 @@ function createCircle(e){
 
     function selectShape(e){
         
-        console.log(e.target.tagName)
+        //console.log(e.target.tagName)
         if (e.target.tagName === "svg"){
             // need this to change back to the dataset color
             selectedShape.setAttribute("fill", selectedShape.dataset.color)
@@ -362,23 +358,21 @@ function createCircle(e){
     } 
 
     function selectShapeWithObject(obj) {
+        
         obj = obj.children[0]
-        console.log(obj.tagName)
+        
         if (obj.tagName === "svg") {
             selectedShape.setAttribute("fill", "red")
             clearSelected()
         } else if (selectedShape === "") {
             obj.setAttribute("fill", "green")
             selectedShape = obj
-            //console.dir(obj)
+            
             if(obj.tagName === "circle"){
                 panelShape.innerText = obj.tagName
                 panelWidth.innerText = obj.cx.baseVal.value
                 panelHeight.innerText = obj.cy.baseVal.value
-                //panelColor.innerText = obj.attributes.fill.value
-                //console.dir(obj)
-                //console.dir(obj.dataset)
-                console.log(obj.dataset)
+                
             } else if (obj.tagName === "rect"){
                 panelShape.innerText = obj.tagName
                 panelWidth.innerText = obj.x.baseVal.value
@@ -408,8 +402,7 @@ function createCircle(e){
     }
 
     ul.addEventListener("click", function(e){
-        //selectShape(e.target) but need the shape that corresponds
-        console.log(e.target.dataset.id)
+        
         let svgs = Array.from(svg.children)
         svgs.forEach(svg => {
             if(svg.dataset.id == e.target.dataset.id){
@@ -427,12 +420,11 @@ function createCircle(e){
         selectedShape = ""
     }
     
-    const button = document.getElementsByTagName("BUTTON")[5]
-    button.addEventListener("click", function(e){
+    const buttonRemove = document.getElementById("remove")
+    buttonRemove.addEventListener("click", function(e){
         removeShape()
         clearSelected()
         updateLayers()
-        
     })
 
     function removeShape(){
@@ -446,8 +438,6 @@ function createCircle(e){
         panelHeight.innerText = ""
         panelColor.innerText = ""
     }
-    //change color function that takes two arguments, current object and new color.
-
 
 
     function buildPath(array){
@@ -460,7 +450,7 @@ function createCircle(e){
         let newArray = array.map(x=>x)
         newArray.shift()
         let finalString = `${M}`
-        console.log(newArray)
+        //console.log(newArray)
         newArray.forEach(n => {
             finalString = finalString + ` L ${n[0]} ${n[1]} `
             
@@ -469,8 +459,6 @@ function createCircle(e){
         finalString = finalString + `Z`
 
         //render shape here
-        console.log(finalString)
-
         // create the svg element
         const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
@@ -490,6 +478,9 @@ function createCircle(e){
 
         // attach container to document
         svg.appendChild(svg1);
+
+        //this function is repeating shapes
+        //need a way to say when you're done.
         
     }
 
@@ -519,6 +510,22 @@ function createCircle(e){
         colorBox.style.backgroundColor = newrgb
         
     })
+
+
+    //function to clear button color
+    function clearButtonColor(e){
+        
+        let buttons = Array.from(buttonGroup.children)
+        buttons.forEach(button =>{
+            if (button.classList.contains("btn-dark")){
+                button.classList.remove("btn-dark")
+                button.classList.add("btn-info")
+            } else {
+
+            }
+            e.target.classList.add("btn-dark")
+        })
+    }
 
 
 })
